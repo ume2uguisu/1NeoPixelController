@@ -32,7 +32,7 @@ Adafruit_NeoPixel *pixels;
 
 typedef struct { int rgb[3]; } color;
 
-//
+//Gloval Variables
 int color_mode = 0;
 int flash_mode = 0;
 int push_count = 0;
@@ -70,7 +70,6 @@ int next_brightness(){
    }
 }
 
-
 int check_sw_action(){
     int action = 0;
     if(push_count>=10){
@@ -78,14 +77,11 @@ int check_sw_action(){
     }
     if(push_count>=30){
       action = CHANGE_FLASH;
-
     }
-
     return action;
 }
 
 color get_rgb(int request){
-  
   color rgb;
   switch(request){
       case RED:
@@ -123,10 +119,8 @@ color get_rgb(int request){
         rgb = get_rgb(mix_current_col);
         break;
   }
-  
   return rgb;
 }
-
 
 void setup() {
   pixels = new Adafruit_NeoPixel(NUM_PIXELS, LED_PIN, pixelFormat);
@@ -151,7 +145,6 @@ void loop() {
               color_mode++;
             }
           break;
-
           case CHANGE_FLASH:
             if(flash_mode == VERY_QUICKLY){
                 flash_mode = SOLID;
@@ -159,17 +152,9 @@ void loop() {
                 flash_mode++;
               }
             break;
-
           case NONE:
             break;
       }
     push_count = 0;
   }
-
-   next_brightness();
-   color col = get_rgb(color_mode);
-   pixels->setPixelColor(0, pixels->Color(col.rgb[0], col.rgb[1], col.rgb[2] ));
-   pixels->show(); 
-
-    delay(10);
 }
